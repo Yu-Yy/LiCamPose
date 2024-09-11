@@ -1,0 +1,53 @@
+CUDNN:
+  BENCHMARK: true
+  DETERMINISTIC: false
+  ENABLED: true
+DATA_DIR: '/path/to/BasketBall' #'
+DATASET: 'BasketBall'  # 
+GPUS: '0' # 0,1,2,3,4'
+ENV_GPUS: '0'
+OUTPUT_DIR: 'output_BaskeBall' 
+MODEL: 'VoxelFusionNet' 
+LOG_DIR: 'log'
+WORKERS: 8
+PRINT_FREQ: 100
+NUM_JOINTS: 15
+SEED: 1
+THU: True
+
+NETWORK:
+  IMAGE_SIZE:
+    - 2048
+    - 1536
+  HEATMAP_SIZE:
+    - 512
+    - 384
+  MID_FDIM: 32 # 16
+  HEAD_DIM: 32
+
+TRAIN:
+  BATCH_SIZE: 8  # 8 
+  SHUFFLE: true
+  BEGIN_EPOCH: 0
+  END_EPOCH: 5 # tranfer needs the early stop
+  RESUME: true
+  OPTIMIZER: adam
+  LR: 0.001
+  BETA: 100.0
+TEST:
+  MODEL_FILE: 'model_best.pth.tar'
+  BATCH_SIZE: 4
+
+PICT_STRUCT:
+  GRID_SIZE:
+    - 2.0
+    - 2.0
+    - 2.0
+  CUBE_SIZE:
+    - 64
+    - 64
+    - 64
+
+DDP:
+  NUM_PROCESS_PER_NODE: 1
+  PORT: '10100'

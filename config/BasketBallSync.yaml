@@ -1,0 +1,51 @@
+CUDNN:
+  BENCHMARK: true
+  DETERMINISTIC: false
+  ENABLED: true
+DATA_DIR: '/path/to/BasketBallSync' # sync_thu_cam2 is  BasketBallSycn
+DATASET: 'SyntheticDataM'
+GPUS: '0'
+ENV_GPUS: '0'
+OUTPUT_DIR: 'output_BasketBallSync'
+LOG_DIR: 'log'
+WORKERS: 2
+PRINT_FREQ: 100
+NUM_JOINTS: 15
+SEED: 1
+USE_PRED2D: True # True for the transfer learning!!!!
+TRAIN:
+  BATCH_SIZE: 8
+  SHUFFLE: true
+  BEGIN_EPOCH: 0
+  END_EPOCH: 20
+  RESUME: true
+  OPTIMIZER: adam
+  LR: 0.001
+  BETA: 100.0
+  AUGMENT: False # for pred training
+TEST:
+  MODEL_FILE: 'model_best.pth.tar'
+  BATCH_SIZE: 4
+
+NETWORK:
+  IMAGE_SIZE:
+    -  2048 #1920
+    -  1536 #1080
+  HEATMAP_SIZE:
+    -  512 #480
+    -  384 #270
+  MID_FDIM: 32
+
+PICT_STRUCT:
+  GRID_SIZE:
+    - 2.0
+    - 2.0
+    - 2.0
+  CUBE_SIZE:
+    - 64
+    - 64
+    - 64
+
+DDP:
+  NUM_PROCESS_PER_NODE: 1
+  PORT: '10100'
