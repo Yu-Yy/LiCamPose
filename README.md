@@ -1,7 +1,7 @@
 <p align="center">
   <h1 align="center">LiCamPose: Combining Multi-View LiDAR and RGB Cameras for Robust Single-timestamp 3D Human Pose Estimation</h1>
   <p align="center">
-    <strong>WACV 2025, Paper ID: 600</strong></a>
+    <strong>Zhiyu Pan, Zhicheng Zhong, Wenxuan Guo, Yifan Chen, Jianjiang Feng, Jie Zhou</strong></a>
   </p>
   <div align="center">
     <div style="display: inline-block; margin: 10px;">
@@ -17,14 +17,14 @@
 </p>
 
 ## Overview
-This Repo contains the implementation codes, SyncHuman generator, and BasketBall datasets described in the paper to estimated the 3D human pose by fusion the RGB and LiDAR informations from multiple views in single timestamp. LiCamPose aims to establish a baseline for 3D human pose estimation using multi-view RGB and LiDAR data, while also offering a dataset generator to facilitate further research in the field. This paper is underreview by WACV 2025.
+This Repo contains the implementation codes, SyncHuman generator, and BasketBall datasets described in the paper to estimated the 3D human pose by fusion the RGB and LiDAR informations from multiple views in single timestamp. LiCamPose aims to establish a baseline for 3D human pose estimation using multi-view RGB and LiDAR data, while also offering a dataset generator to facilitate further research in the field. This paper is accepted by WACV 2025.
 
 ## News and Update
 * [Sep. 1st] Basic Version Release.
     * The basic training code of LiCamPose.
     * A few examples of BasketBallSync and BasketBall
     * SyncHuman Generator
-* [Oct. 28th] ★ if accepted by WACV.
+* [TODO] ★
     * Complete Datasets Release.
     * Generator with more functions Release.
     * Stay tuned.
@@ -36,15 +36,6 @@ Basic requirements about codes:
 ```
 pip install -r requirement.txt
 ```
-
-## Download Weights
-| Traing Way           | Datasets         | weights           |
-|------------------|------------------|-------------------|
-| Supervised       | Panoptic      | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Supervised       | BasketBallSync       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Supervised       | PanopticSync       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Unsupervised     | BasketBall      | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Unsupervised     | MVOR       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
 
 ## Download SyncHuman
 Download the SyncHuman from the [link](https://cloud.tsinghua.edu.cn/f/cead8353ba2341a9a162/?dl=1). The saving path can be set at the `Generate Point Cloud` script from the `Point Cloud Particle System` Component. The folder of pose files (`CMU`) can be set at the `Frame Rate Controller` script from the `Runtime Parameters Controller` Component. We plan to develop a more user-friendly interface for SyncHuman.
@@ -143,6 +134,9 @@ If you find our repo helpful, please consider leaving a star or cite our paper :
 
 ```
 @article{LiCamPose,
-  XXXXXXX
+  title={LiCamPose: Combining Multi-View LiDAR and RGB Cameras for Robust Single-frame 3D Human Pose Estimation},
+  author={Pan, Zhiyu and Zhong, Zhicheng and Guo, Wenxuan and Chen, Yifan and Feng, Jianjiang and Zhou, Jie},
+  journal={arXiv preprint arXiv:2312.06409},
+  year={2023}
 }
 ```
