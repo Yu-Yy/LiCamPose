@@ -1,7 +1,8 @@
 <p align="center">
   <h1 align="center">LiCamPose: Combining Multi-View LiDAR and RGB Cameras for Robust Single-timestamp 3D Human Pose Estimation</h1>
   <p align="center">
-    <strong>WACV 2025, Paper ID: 600</strong></a>
+    <strong>Zhiyu Pan, Zhicheng Zhong, Wenxuan Guo, Yifan Chen, Jianjiang Feng, Jie Zhou</strong> <br>
+    Department of Automation, Tsinghua University, China <br>
   </p>
   <div align="center">
     <div style="display: inline-block; margin: 10px;">
@@ -13,136 +14,138 @@
       <p><strong>Datasets</strong></p>
     </div>
   </div>
-  <br>
 </p>
 
-## Overview
-This Repo contains the implementation codes, SyncHuman generator, and BasketBall datasets described in the paper to estimated the 3D human pose by fusion the RGB and LiDAR informations from multiple views in single timestamp. LiCamPose aims to establish a baseline for 3D human pose estimation using multi-view RGB and LiDAR data, while also offering a dataset generator to facilitate further research in the field. This paper is underreview by WACV 2025.
+---
 
-## News and Update
-* [Sep. 1st] Basic Version Release.
-    * The basic training code of LiCamPose.
-    * A few examples of BasketBallSync and BasketBall
-    * SyncHuman Generator
-* [Oct. 28th] ★ if accepted by WACV.
-    * Complete Datasets Release.
-    * Generator with more functions Release.
-    * Stay tuned.
+## 🧠 Overview
 
-## Requirements
-We recommend running our code on an Nvidia GPU equivalent to or better than the 3090, with a Linux Ubuntu system version 20.04.4 or higher. For running the SyncHuman Generator, we suggest using Windows 10 or later, with Unity version 2021.3.7f1c1.
+This repository provides the official implementation of **LiCamPose**, a pipeline for estimating 3D human poses from multi-view RGB and LiDAR inputs captured at a single timestamp.  
+LiCamPose establishes a strong baseline for 3D human pose estimation by fusing dense spatial and geometric information from cameras and point clouds.  
+The project also includes a synthetic data generator (SyncHuman) and real-world datasets for training and evaluation.
 
-Basic requirements about codes:
-```
-pip install -r requirement.txt
-```
+> 📄 This work has been accepted at **WACV 2025**.
 
-## Download Weights
-| Traing Way           | Datasets         | weights           |
-|------------------|------------------|-------------------|
-| Supervised       | Panoptic      | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Supervised       | BasketBallSync       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Supervised       | PanopticSync       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Unsupervised     | BasketBall      | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
-| Unsupervised     | MVOR       | [weights](https://cloud.tsinghua.edu.cn/f/fd5ca22af0eb44afa124/?dl=1)              |
+---
 
-## Download SyncHuman
-Download the SyncHuman from the [link](https://cloud.tsinghua.edu.cn/f/cead8353ba2341a9a162/?dl=1). The saving path can be set at the `Generate Point Cloud` script from the `Point Cloud Particle System` Component. The folder of pose files (`CMU`) can be set at the `Frame Rate Controller` script from the `Runtime Parameters Controller` Component. We plan to develop a more user-friendly interface for SyncHuman.
+## 🔧 Requirements
 
+We recommend the following setup:
 
-## Training 
-Take training on BasketBallSyc as example:
-```
+- **GPU**: NVIDIA RTX 3090 or higher
+- **System**: Ubuntu 20.04.4+ for model training; Windows 10+ for running SyncHuman
+- **Unity Version**: 2021.3.7f1c1 (for SyncHuman)
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+````
+
+---
+
+## 📦 Dataset Downloads
+
+* **[BasketBall Dataset (real-world)](https://cloud.tsinghua.edu.cn/d/06241a11447049d9b6da/)**
+* **[BasketBallSync Dataset (synthetic)](https://cloud.tsinghua.edu.cn/d/18d4f821ac764db6923a/)**
+
+---
+
+## 📥 Download SyncHuman Generator
+
+Download SyncHuman from [this link](https://cloud.tsinghua.edu.cn/f/cead8353ba2341a9a162/?dl=1).
+Set the output path in the `Generate Point Cloud` script under the `Point Cloud Particle System` component.
+Specify the pose file folder (e.g., CMU) in the `Frame Rate Controller` script of the `Runtime Parameters Controller`.
+
+---
+
+## 🏋️‍♂️ Training
+
+Example: training on **BasketBallSync**:
+
+```bash
 python train_mul.py --cfg config/BasketBallSync.yaml
 ```
 
-## Evaluating:
-Take evaluating on Panoptic Studio as exaple:
-```
+---
+
+## 🧪 Evaluation
+
+Example: evaluation on **Panoptic Studio**:
+
+```bash
 python validate_pan_mul.py --cfg config/panoptic.yaml
 ```
 
-## Prepare the Datasets
-Place the BasketBall and BasketBallSync dataset in the structure as follows:
+---
+
+## 📁 Dataset Structure
+
+Please organize the datasets as follows:
+
+<details>
+<summary><strong>BasketBall</strong> (real-world)</summary>
+
 ```bash
 BasketBall/
-├── images/  # RGB images 
+├── images/
 │   ├── camera_timecode.csv
-│   └── camera # images from four views
-│       ├── camera_1
-│       ├── camera_2
-│       ├── camera_2
-│       └── camera_3
-│           ├── 00000.jpeg
-│           ├── 00001.jpeg
-│           └── ...
-├── points_pcd_roi/ # point cloud 
-│   ├── 00000.pcd
-│   ├── 00001.pcd
-│   └── ...  
-├── points_ped/ # point cloud for each player
-│    ├── 000000_001.ply # <frame_id>_<player_id>.ply
-│    ├── 000000_002.ply
-│    └── ...
-└── pose_2d_ped/ # predicted 2D poses for each player
-    ├── camera_1
-    ├── camera_2
-    ├── camera_2
-    └── camera_3
-        ├── 000000_001.json # <frame_id>_<player_id>.json
-        ├── 000000_002.json
-        └── ...
+│   └── camera/
+│       ├── camera_1/
+│       ├── camera_2/
+│       ├── camera_3/
+│       └── camera_4/
+├── points_pcd_roi/
+├── points_ped/
+├── pose_2d_ped/
+```
 
+</details>
+
+<details>
+<summary><strong>BasketBallSync</strong> (synthetic)</summary>
+
+```bash
 BasketBallSync/
-├── images/  # RGB images 
-│    ├── 1 # view 1
-│        ├── camera_0.jpg # camera_<frame_id>.jpg
-│        ├── camera_1.jpg
-│        └── ...
-│    ├── 2
-│    ├── 3
-│    ├── 4
-│    ├── camera_1.txt # calibration parameters
-│    ├── camera_2.txt
-│    ├── camera_3.txt
-│    └── camera_4.txt
-├── joints/ # ground truth 3D joints
-│    ├── 0 # player ID
-│    ├── ...
-│    └── 9
-│        ├── joints_0.txt # joints_<frame_id>.txt
-│        └── ...
-├── points/ # point cloud of the scene
-│    ├── point_0.txt # point_<frame_id>.txt
-│    └── ...
-├── points_ped/ # point cloud of each player
-│    ├── 0 # player ID
-│    ├── ...
-│    └── 9
-│        ├── 00000.ply # <frame_id>.ply
-│        ├── 00001.ply
-│        └── ...
-└── pred_2d_folder # 2D joints label predicted by VitPose of each player
-    ├── 0 # player ID
-    ├── ...
-    └── 9
-        ├── 1 # view_id
-        ├── 2
-        ├── 3
-        └── 4
-            ├── 00000.json # <frame_id>.json
-            └── ...
+├── images/
+│   ├── 1/ 2/ 3/ 4/              # View folders
+│   └── camera_*.txt            # Calibration files
+├── joints/                     # 3D ground truth
+├── points/                     # Scene-level point clouds
+├── points_ped/                 # Player-level point clouds
+└── pred_2d_folder/             # ViTPose-predicted 2D joints
 ```
 
-## License and Usage Restrictions
-Code related to the DMD is under MIT license. \
-**! ! This project is intended for academic research purposes only and cannot be used for commercial purposes.**
+</details>
 
-## Citation
-If you find our repo helpful, please consider leaving a star or cite our paper :)
+---
 
-```
-@article{LiCamPose,
-  XXXXXXX
+## ⚠️ License and Usage
+
+The code related to DMD is released under the MIT License.
+**This project is intended for academic research only. Commercial use is strictly prohibited.**
+
+---
+
+## 📖 Citation
+
+If you find this project useful, please consider citing:
+
+```bibtex
+@INPROCEEDINGS{10943637,
+  author    = {Pan, Zhiyu and Zhong, Zhicheng and Guo, Wenxuan and Chen, Yifan and Feng, Jianjiang and Zhou, Jie},
+  booktitle = {2025 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)}, 
+  title     = {LiCamPose: Combining Multi-View LiDAR and RGB Cameras for Robust Single-timestamp 3D Human Pose Estimation}, 
+  year      = {2025},
+  pages     = {2484-2494},
+  doi       = {10.1109/WACV61041.2025.00247}
 }
 ```
+
+---
+
+## 🌟 Acknowledgement
+
+Thanks to all contributors and dataset providers. Please reach out if you encounter any issues or have questions.
+
+---

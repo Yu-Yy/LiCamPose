@@ -196,7 +196,6 @@ def train(train_queue, model, cnn_optimizer, global_step, writer, logging):
 
     return global_step
 
-
 def validate(valid_queue, model, logging, writer, args, epoch):
     reconstruction_loss_c = utils.AvgrageMeter()
     rela_loss_c = utils.AvgrageMeter()
