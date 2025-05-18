@@ -18,7 +18,6 @@ config = edict()
 config.OUTPUT_DIR = 'output'
 config.LOG_DIR = 'log'
 config.DATA_DIR = ''
-# config.BACKBONE_MODEL = 'pose_resnet'
 config.MODEL = ''
 config.GPUS = '0,1'
 config.ENV_GPUS = '0,1'

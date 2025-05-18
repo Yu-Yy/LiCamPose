@@ -23,7 +23,6 @@ from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
 matplotlib.use('Agg') 
 
-# limbs = [[0,1],[1,2],[1,3],[1,4],[3,5],[5,7],[4,6],[6,8],[2,9],[2,10],[9,11],[11,13],[10,12],[12,14]]
 limbs = np.array([[0, 1],
          [0, 2],
          [0, 3],
@@ -519,6 +518,3 @@ def groups_per_scale(num_scales, num_groups_per_scale, is_adaptive, divider=2, m
             n = n // divider
             n = max(minimum_groups, n)
     return g
-
-
-# def calculate_idx()

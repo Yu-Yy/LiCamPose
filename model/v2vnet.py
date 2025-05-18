@@ -142,3 +142,4 @@ class V2VNet(nn.Module):
                 # nn.init.xavier_normal_(m.weight)
                 nn.init.normal_(m.weight, 0, 0.001)
                 nn.init.constant_(m.bias, 0)
+ 

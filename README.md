@@ -49,6 +49,11 @@ pip install -r requirements.txt
 * **[BasketBall Dataset (real-world)](https://cloud.tsinghua.edu.cn/d/06241a11447049d9b6da/)**
 * **[BasketBallSync Dataset (synthetic)](https://cloud.tsinghua.edu.cn/d/18d4f821ac764db6923a/)**
 
+To extract the datasets, use the following commands to combine the split files and unzip the archive:
+```bash
+zip -s 0 BaseketBall.zip --out BaseketBall_merged.zip
+unzip BaseketBall_merged.zip
+```
 ---
 
 ## 📥 Download SyncHuman Generator

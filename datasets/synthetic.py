@@ -25,23 +25,6 @@ class SyntheticData(data.Dataset):
     def __len__(self):
         return len(self.peds) * self.timestamp # TODO: fixed the length for the equal test 3517
 
-    # def __getpc__(self, pc, kp):
-    #     # confirm the bbox range
-    #     r_min = np.min(kp, axis=0) - 0.1
-    #     r_max = np.max(kp, axis=0) + 0.1
-    #     select = pc[:,0] > r_min[0] and pc[:,0] < r_max[0] and pc[:,1] > r_min[1] and pc[:,1] < r_max[1]\
-    #         and pc[:,2] > r_min[2] and pc[:,2] < r_max[2] and pc[:,2] > 0.1
-    #     points_peds = pc[select,:]
-
-    #     center = 0.5 * (np.max(points_peds[:,:2], axis=0, keepdims=True) + np.min(points_peds[:,:2], axis=0, keepdims=True)) # center is not the mean
-
-    #     height = np.min(points_peds[:,2:3], axis=0, keepdims=True)
-    #     uni = np.concatenate([center, height], axis=1)   # tranfer to relative space's points and joints
-    #     lidar_load = points_peds - uni
-    #     kp_load = kp - uni
-
-    #     return lidar_load, kp_load
-
     def __augment__(self, lidar, joints):
         # lidar is N x 3
         # joints is J x 3
@@ -69,7 +52,6 @@ class SyntheticData(data.Dataset):
         i_y[i_y == cube_size[1]] = cube_size[1] - 1
         i_z[i_z == cube_size[2]] = cube_size[2] - 1
 
-        # # || TODO: VOXEL COUNTING
         i = np.concatenate([i_x[:,np.newaxis], i_y[:,np.newaxis], i_z[:,np.newaxis]], axis=1)
         i_uniq, inv_ind, voxel_counts = np.unique(i, axis=0, return_inverse=True, return_counts=True)
         input_flatten = np.zeros(cube_size[0] * cube_size[1] * cube_size[2], dtype=np.float32)

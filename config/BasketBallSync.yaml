@@ -29,11 +29,11 @@ TEST:
 
 NETWORK:
   IMAGE_SIZE:
-    -  2048 #1920
-    -  1536 #1080
+    -  2048 
+    -  1536 
   HEATMAP_SIZE:
-    -  512 #480
-    -  384 #270
+    -  512 
+    -  384 
   MID_FDIM: 32
 
 PICT_STRUCT:

@@ -4,7 +4,7 @@ CUDNN:
   ENABLED: true
 DATA_DIR: '/path/to/BasketBall' #'
 DATASET: 'BasketBall'  # 
-GPUS: '0' # 0,1,2,3,4'
+GPUS: '0' #
 ENV_GPUS: '0'
 OUTPUT_DIR: 'output_BaskeBall' 
 MODEL: 'VoxelFusionNet' 

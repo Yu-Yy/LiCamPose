@@ -53,3 +53,4 @@ class PoseRegressionNet_2D(nn.Module):
         pred = torch.cat([pred, entropy], dim=2)
 
         return pred
+ 

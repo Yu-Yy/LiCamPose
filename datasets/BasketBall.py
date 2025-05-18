@@ -13,17 +13,14 @@ class BasketBall(data.Dataset):
         super().__init__()
         self.space_size = np.array(cfg.PICT_STRUCT.GRID_SIZE)
         self.num_joints = cfg.NUM_JOINTS
-        # self.space_size = np.array([2,2,2])
         self.initial_cube_size = np.array(cfg.PICT_STRUCT.CUBE_SIZE)
-        # self.initial_cube_size = np.array([64,64,64])
         self.datadir = datadir
         self.points_ped_folder = os.path.join(datadir, 'points_ped')
         self.points_ped_folder_files = glob(os.path.join(self.points_ped_folder,'*.ply'))
-        # self.kp_2d_folder = osp.join(datadir, 'pose_2d_ped_undistort')
         self.kp_2d_folder = osp.join(datadir, 'pred2d_pose')
-        self.views_num = 4 # TODO: female is 3
+        self.views_num = 4 #
         self.kp_num = cfg.NUM_JOINTS
-        self.image_size = np.array([2048, 1536]) # fixed the array size #np.array(cfg.NETWORK.IMAGE_SIZE) # changed the image size
+        self.image_size = np.array([2048, 1536]) # fixed the array size 
         self.heatmap_size = np.array([512, 384]) # fixed the heatmap size cfg.NETWORK.HEATMAP_SIZE
         self.sigma = cfg.NETWORK.SIGMA
         # another camrea_view mod, the orignal meta
@@ -43,7 +40,7 @@ class BasketBall(data.Dataset):
         new_cam = {}
         for v in range(self.views_num):
             new_cam[v] = {}
-        for idx, (id, cam) in enumerate(cameras.items()): # id is 3 4 5 6
+        for idx, (id, cam) in enumerate(cameras.items()): # id is 0 1 2 3
             for k, v in cam.items():
                 new_cam[idx][k] = np.array(v)
             
@@ -162,7 +159,6 @@ class BasketBall(data.Dataset):
         # find the kp info
         pred_2d_info = []
         for v in range(self.views_num):
-            # kp_file = osp.join(self.kp_2d_folder, self.camera_names[v], f'{time_idx:0>6d}_{ped:0>3d}.json')
             kp_file = osp.join(self.kp_2d_folder, self.camera_names[v], f'{time_idx:0>5d}_{ped:0>4d}.json')
             if osp.exists(kp_file):
                 with open(kp_file, 'r') as f:

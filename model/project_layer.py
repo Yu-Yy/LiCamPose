@@ -88,4 +88,4 @@ class ProjectLayer(nn.Module):
 
     def forward(self, heatmaps, projectionM, grid_size, grid_center, cube_size):
         cubes, grids = self.get_voxel(heatmaps, projectionM, grid_size, grid_center, cube_size)
-        return cubes, grids
+        return cubes, grids 

@@ -98,31 +98,3 @@ def undistort_point2d(x, f, c, k, p):
 
     return ypixel.T
 
-
-
-# def world_to_camera_frame(x, R, T):
-#     """
-#     Args
-#         x: Nx3 3d points in world coordinates
-#         R: 3x3 Camera rotation matrix
-#         T: 3x1 Camera translation parameters
-#     Returns
-#         xcam: Nx3 3d points in camera coordinates
-#     """
-
-#     xcam = R.dot(x.T - T)  # rotate and translate
-#     return xcam.T
-
-
-# def camera_to_world_frame(x, R, T):
-#     """
-#     Args
-#         x: Nx3 points in camera coordinates
-#         R: 3x3 Camera rotation matrix
-#         T: 3x1 Camera translation parameters
-#     Returns
-#         xcam: Nx3 points in world coordinates
-#     """
-
-#     xcam = R.T.dot(x.T) + T  # rotate and translate
-#     return xcam.T

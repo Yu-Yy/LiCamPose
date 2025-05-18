@@ -8,15 +8,8 @@ import argparse # prepare for the arg config
 from config import config
 from config import update_config
 import torch.distributed as dist
-# from torch.multiprocessing import Process
 import torch.backends.cudnn as cudnn
-# import torch.multiprocessing as mp
-# mp.set_start_method('spawn')
-import time
-
 import shutil
-# model and dataset part
-# from datasets.thu_ct_mul import THUCT
 from datasets.panoptic import Panoptic # the new 
 from torch.utils.data.dataloader import default_collate
 
@@ -40,18 +33,6 @@ def create_exp_dir(path, scripts_to_save=None):
         for script in scripts_to_save:
             dst_file = os.path.join(path, 'scripts', os.path.basename(script))
             shutil.copyfile(script, dst_file)
-
-def init_processes(rank, size, fn, args):
-    """ Initialize the distributed environment. """
-    os.environ['MASTER_ADDR'] = config.DDP.MASTER_ADDRESS
-    os.environ['MASTER_PORT'] = config.DDP.PORT #'6020' # set the port 
-    torch.cuda.set_device(args.local_rank)
-    dist.init_process_group(backend='nccl', init_method='env://', rank=rank, world_size=size)
-    fn(args)
-    cleanup()
-
-def cleanup():
-    dist.destroy_process_group()
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train keypoints network')

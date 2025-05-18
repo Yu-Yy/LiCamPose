@@ -11,7 +11,7 @@ from model.v2vnet import V2VNet
 from model.project_layer import ProjectLayer
 
 # it needs to re-calculate the standard for the model's confidence
-
+ 
 
 class SoftArgmaxLayer(nn.Module):
     def __init__(self, cfg):

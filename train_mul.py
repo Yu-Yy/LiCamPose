@@ -256,4 +256,4 @@ if __name__ == '__main__':
     args = parse_args()
     create_exp_dir(config.OUTPUT_DIR)
     size = config.DDP.NUM_PROCESS_PER_NODE
-    main(args)
+    main(args) 

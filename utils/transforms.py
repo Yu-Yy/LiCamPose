@@ -269,3 +269,4 @@ def procrustes_transform(target_pose, from_pose):
     align_pose = s * from_pose.dot(rot) + t
 
     return align_pose
+ 

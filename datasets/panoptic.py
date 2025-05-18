@@ -20,10 +20,7 @@ class Panoptic(data.Dataset):
     def __init__(self, cfg, datadir, is_transfer = True): #
         super().__init__()
         self.space_size = np.array(cfg.PICT_STRUCT.GRID_SIZE)
-        # self.num_joints = cfg.NUM_JOINTS
-        # self.space_size = np.array([2,2,2])
         self.initial_cube_size = np.array(cfg.PICT_STRUCT.CUBE_SIZE)
-        # self.initial_cube_size = np.array([64,64,64])
         self.datadir = datadir
         self.scene = datadir.split('/')[-1]
         self.points_ped_folder = os.path.join(datadir, 'sorted_data','points_ped')
@@ -55,9 +52,6 @@ class Panoptic(data.Dataset):
         idx = 0
         for cam in calib_data["cameras"]:
             if (cam['panel'], cam['node']) in cam_list:
-                # init_transfer_m = np.concatenate([np.array(cam['R']), np.array(cam['t']).reshape((3, 1)) / 100 ], axis=1)
-                # init_transfer_m = np.concatenate([init_transfer_m, np.array([[0, 0, 0, 1]])], axis=0)
-                # new_extrinsic = init_transfer_m @ np.M #np.linalg.pinv(panoptic2kinect)
                 sel_cam = {}
                 sel_cam['K'] = np.array(cam['K'])
                 sel_cam['distCoef'] = np.array(cam['distCoef'])
@@ -90,7 +84,6 @@ class Panoptic(data.Dataset):
         i_y[i_y == cube_size[1]] = cube_size[1] - 1
         i_z[i_z == cube_size[2]] = cube_size[2] - 1
 
-        # # || TODO: VOXEL COUNTING
         i = np.concatenate([i_x[:,np.newaxis], i_y[:,np.newaxis], i_z[:,np.newaxis]], axis=1)
         i_uniq, inv_ind, voxel_counts = np.unique(i, axis=0, return_inverse=True, return_counts=True)
         input_flatten = np.zeros(cube_size[0] * cube_size[1] * cube_size[2], dtype=np.float32)
@@ -186,28 +179,11 @@ class Panoptic(data.Dataset):
                 kp_gt3d[:,:3] = kp_gt3d[:,:3] / 100 # cm to m
                 kp_gt3d = kp_gt3d[:15,:]
                 kp_gt3d[:,:3] = kp_gt3d[:,:3].dot(M)
-                # kp_gt3d_cord = np.concatenate([kp_gt3d[:,:3], np.ones([self.num_joints, 1])], axis=1)
-                # kp_gt3d_cord = kp_gt3d_cord @ panoptic2kinect.T
-                # kp_gt3d[:,:3] = kp_gt3d_cord[:,:3]
                 break
         kp_gt3d = torch.from_numpy(kp_gt3d).float()
-        # if not os.path.exists(pcd_file):
-        #     return None, None, None, None, None, None,None, None
-        # judge the ped and seq validation
-        # if self.is_transfer:
-        #     if time_idx in self.valid_index[ped]:
-        #         ref_pose = self.temp_opt_pose[time_idx][ped]
-        #         ref_pose = np.concatenate([ref_pose, np.ones([self.num_joints, 1])], axis=1)
-        #     else:
-        #         ref_pose = np.zeros((self.num_joints, 4))
-        # else:
-        #     ref_pose = np.zeros((self.num_joints, 4))
         pcd = o3d.io.read_point_cloud(pcd_file)
         lidar_load = np.array(pcd.points)
         lidar_load = lidar_load.dot(M)
-        # lidar_load = np.concatenate([lidar_load, np.ones([lidar_load.shape[0], 1])], axis=1)
-        # lidar_load = lidar_load @ panoptic2kinect.T
-        # lidar_load = lidar_load[:,:3]
 
         lidar_center = 0.5 * (np.max(lidar_load, axis=0) + np.min(lidar_load, axis=0))
         input_3d = self.generate_3d_input(lidar_load, lidar_center)
@@ -222,8 +198,6 @@ class Panoptic(data.Dataset):
                 with open(kp_file, 'r') as f:
                     kp_2d = json.load(f)
                 kp_2d = np.array(kp_2d)
-                # kp_2d_pose = undistort_pose2d(kp_2d[...,:2], self.cameras[v])
-                # kp_2d_pose = np.concatenate([kp_2d_pose, kp_2d[...,2:]], axis=1)
                 pred_2d_info.append(kp_2d)
             else:
                 pred_2d_info.append(np.zeros((self.kp_num, 3)))
@@ -257,8 +231,6 @@ class Panoptic(data.Dataset):
         time_idx = torch.tensor(time_idx)
         for v in range(self.views_num):
             pred_2d_info[v] = torch.tensor(pred_2d_info[v])
-        # ref_pose = torch.tensor(ref_pose)
-        # pay attention, pred_2d_info relates to the input_heatmap 
         return input_3d, input_heatmap, pred_2d_info, kp_2d_gt, self.cameras, lidar_center,  ped, time_idx, self.scene, kp_gt3d
 
     @staticmethod
@@ -269,7 +241,3 @@ class Panoptic(data.Dataset):
         minx, maxx = np.min(pose[idx, 0]), np.max(pose[idx, 0])
         miny, maxy = np.min(pose[idx, 1]), np.max(pose[idx, 1])
         return np.clip(np.maximum(maxy - miny, maxx - minx) ** 2, 1.0 / 4 * 96 ** 2, 4 * 96 ** 2)
-
-if __name__ == '__main__':
-    valid_dataset = Panoptic('/disk1/panzhiyu/THU_CT/')
-    a,b,c,d,e,f,g = valid_dataset[100]

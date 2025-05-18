@@ -72,7 +72,6 @@ class SyntheticDataM(data.Dataset):
         self.timestamp = len(self.files)
         self.space_size = np.array(cfg.PICT_STRUCT.GRID_SIZE)
         self.initial_cube_size = np.array(cfg.PICT_STRUCT.CUBE_SIZE)
-        # self.views_num = 4 # TODO: It should not be fixed
         self.image_size = np.array(cfg.NETWORK.IMAGE_SIZE)
         self.heatmap_size = np.array(cfg.NETWORK.HEATMAP_SIZE)
         self.sigma = cfg.NETWORK.SIGMA
@@ -106,7 +105,6 @@ class SyntheticDataM(data.Dataset):
     def generate_3d_input(self, lidar, kp, space_center): # different person has different space center
         space_size = self.space_size
         cube_size = self.initial_cube_size
-        # input_3d = np.zeros((cube_size[0], cube_size[1], cube_size[2]), dtype=np.float32)
         grid1Dx = np.linspace(-space_size[0] / 2, space_size[0] / 2, cube_size[0]) + space_center[0]
         grid1Dy = np.linspace(-space_size[1] / 2, space_size[1] / 2, cube_size[1]) + space_center[1]
         grid1Dz = np.linspace(-space_size[2] / 2, space_size[2] / 2, cube_size[2]) + space_center[2]
@@ -119,7 +117,6 @@ class SyntheticDataM(data.Dataset):
         i_y[i_y == cube_size[1]] = cube_size[1] - 1
         i_z[i_z == cube_size[2]] = cube_size[2] - 1
 
-        # # || TODO: VOXEL COUNTING
         i = np.concatenate([i_x[:,np.newaxis], i_y[:,np.newaxis], i_z[:,np.newaxis]], axis=1)
         i_uniq, inv_ind, voxel_counts = np.unique(i, axis=0, return_inverse=True, return_counts=True)
         input_flatten = np.zeros(cube_size[0] * cube_size[1] * cube_size[2], dtype=np.float32)
@@ -167,12 +164,6 @@ class SyntheticDataM(data.Dataset):
             joints_vis.append(np.repeat(np.reshape(vis, (-1, 1)), 2, axis=1))
             pose2d_gt.append(np.concatenate([pose2d, np.reshape(vis, (-1, 1))], axis=1))
 
-        # trans = get_affine_transform(c, s, r, self.image_size)
-        # input = np.ones((height, width, 3), dtype=np.float32)
-        # input = cv2.warpAffine(
-        #     input,
-        #     trans, (int(self.image_size[0]), int(self.image_size[1])),
-        #     flags=cv2.INTER_LINEAR)
 
         return self._generate_input_heatmap_(joints, joints_vis), pose2d_gt
         
@@ -184,11 +175,6 @@ class SyntheticDataM(data.Dataset):
         '''
         vposes = len(joints)
         num_joints = joints[0].shape[0]
-        # target_weight = np.zeros((num_joints, 1), dtype=np.float32)
-        # for i in range(num_joints):
-        #     for n in range(nposes):
-        #         if joints_vis[n][i, 0] == 1:
-        #             target_weight[i, 0] = 1
         input_heatmap = []
         feat_stride = self.image_size / self.heatmap_size
 
@@ -264,11 +250,10 @@ class SyntheticDataM(data.Dataset):
         joints_file = os.path.join(self.data_dir, 'joints',f'{ped}',f'joints_{time_idx}.txt')
         # test 
         if not os.path.exists(points_file):
-            return None, None, None, None, None #, None, None
+            return None, None, None, None, None 
         pcd = o3d.io.read_point_cloud(points_file)
         pointcloud = np.array(pcd.points)
-        # if pointcloud.shape[0] < 50:
-        #     return None, None, None, None, None
+
         kp = np.loadtxt(joints_file)
         kp = kp[:,[0,2,1]]
         # augment
@@ -313,14 +298,9 @@ class SyntheticDataM(data.Dataset):
 
         kp_load = torch.from_numpy(kp_load)
         output_cam = []
-        # input_3d = input_3d
-        # repeat input_3d first dimension by 5
         for cam in self.cam:
             output_cam.append(torch.from_numpy(cam))
             
-        # if self.use_pred2d:
-        #     return input_3d, kp_load, lidar_center, input_heatmap, output_cam #, ped, time_idx, pred_2d_info # testing the pred2d effect
-        # else:
         return input_3d, kp_load, lidar_center, input_heatmap, output_cam #kp_idx #, ped, time_idx
 
     def process_2d_infomation(self, pred_2d):

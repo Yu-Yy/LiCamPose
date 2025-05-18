@@ -73,35 +73,3 @@ def project_pose_sync(x, projectionM, width = 2048, height = 1536):
     screen_coord[:,1] = height * (1 - (ndc_coord[:,1] / ndc_coord[:,-1] + 1) * 0.5)
     return screen_coord
 
-# def world_to_camera_frame(x, R, T):
-#     """
-#     Args
-#         x: Nx3 3d points in world coordinates
-#         R: 3x3 Camera rotation matrix
-#         T: 3x1 Camera translation parameters
-#     Returns
-#         xcam: Nx3 3d points in camera coordinates
-#     """
-
-#     R = torch.as_tensor(R, device=x.device)
-#     T = torch.as_tensor(T, device=x.device)
-#     # xcam = torch.mm(R, torch.t(x) - T)
-#     xcam = torch.mm(R, torch.t(x)) + T  # rotate and translate
-#     return torch.t(xcam)
-
-
-# def camera_to_world_frame(x, R, T):
-#     """
-#     Args
-#         x: Nx3 points in camera coordinates
-#         R: 3x3 Camera rotation matrix
-#         T: 3x1 Camera translation parameters
-#     Returns
-#         xcam: Nx3 points in world coordinates
-#     """
-
-#     R = torch.as_tensor(R, device=x.device)
-#     T = torch.as_tensor(T, device=x.device)
-#     xcam = torch.mm(torch.t(R), torch.t(x))
-#     xcam = xcam + T  # rotate and translate
-#     return torch.t(xcam)
