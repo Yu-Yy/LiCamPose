@@ -46,8 +46,8 @@ pip install -r requirements.txt
 
 ## 📦 Dataset Downloads
 
-* **[BasketBall Dataset (real-world)](https://cloud.tsinghua.edu.cn/d/06241a11447049d9b6da/)**
-* **[BasketBallSync Dataset (synthetic)](https://cloud.tsinghua.edu.cn/d/18d4f821ac764db6923a/)**
+* **[BasketBall Dataset (real-world)](https://drive.google.com/drive/folders/1CI1pSDkHW51s5cZN5x_nf66tEnRf0m39?usp=drive_link)**
+* **[BasketBallSync Dataset (synthetic)](https://drive.google.com/drive/folders/1Z5PwTJotw7TSuAgY34lTJpthy7AX5kK3?usp=drive_link)**
 
 To extract the datasets, use the following commands to combine the split files and unzip the archive:
 ```bash
@@ -58,7 +58,7 @@ unzip BaseketBall_merged.zip
 
 ## 📥 Download SyncHuman Generator
 
-Download SyncHuman from [this link](https://cloud.tsinghua.edu.cn/f/cead8353ba2341a9a162/?dl=1).
+Download SyncHuman from [this link](https://drive.google.com/file/d/1qi-NMsDDafuSlVoSa6Wx0dXyBG3V3o9v/view?usp=drive_link).
 Set the output path in the `Generate Point Cloud` script under the `Point Cloud Particle System` component.
 Specify the pose file folder (e.g., CMU) in the `Frame Rate Controller` script of the `Runtime Parameters Controller`.
 
